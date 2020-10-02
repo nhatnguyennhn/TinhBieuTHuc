@@ -16,32 +16,33 @@ namespace BaiTap1_Heuristic
         Giá trị còn lại cuối cùng của stack chính là kết quả của biểu thức Postfix ( rất dễ hiểu đúng không? đúng là nhà toán học tài ba ^^ giải thích cái là xong vấn đề)
         */
      
-        public static float tinhFostfix(string postfix,bool ktr)
+        public static double tinhFostfix(string postfix,bool ktr)
         {
+          
 
-            Stack<float> stack = new Stack<float>();
+            Stack<double> stack = new Stack<double>();
            
             postfix = postfix.Trim();
     
             IEnumerable<string> babyCutes = postfix.Split(' '); // như đã nói ở trên bạn hãy đọc sự tích của tên trộm postfix để hiểu 
-         if(ktr)   Console.Write( "Bai toan : "+postfixHoanluong(postfix));
+          if(ktr)   Console.Write( "Bai toan : "+postfixHoanluong(postfix));
             foreach (string babyCute in babyCutes)
             {
               
                 if (canhSatChinhTa.ktrToanHang(babyCute))
                 {
                     
-                    stack.Push(float.Parse(babyCute)); // dù là nhà toán học tài ba nhưng ông ấy vẫn cần sự giúp đỡ của cảnh sát chính tả để biết đâu là toán hạng(nãy khen xong giờ thấy ổng hơi ngu rồi)
+                    stack.Push(double.Parse(babyCute)); // dù là nhà toán học tài ba nhưng ông ấy vẫn cần sự giúp đỡ của cảnh sát chính tả để biết đâu là toán hạng(nãy khen xong giờ thấy ổng hơi ngu rồi)
                 
                 }
                 else
                 {
-                    float soHangTruoc = stack.Pop();
-                    float soHangSau = stack.Pop();
+                    double soHangTruoc = stack.Pop();
+                    double soHangSau = stack.Pop();
                    
                     string[] mang = postfix.Split(soHangSau.ToString() + " " + soHangTruoc.ToString() + " " + babyCute);
 
-                    float t = soHangSau;
+                    double t = soHangSau;
                     switch (babyCute)
                     {
                         case "+": soHangSau += soHangTruoc; break;
@@ -69,6 +70,7 @@ namespace BaiTap1_Heuristic
            
           
             }
+
             return stack.Pop();
          
         }
@@ -85,7 +87,7 @@ namespace BaiTap1_Heuristic
           
             Stack<string> stack = new Stack<string>();
             postfix = postfix.Trim();
-       
+            
             IEnumerable<string> babyCutes = postfix.Split(' ');
     
             foreach (string babyCute in babyCutes)
@@ -95,14 +97,25 @@ namespace BaiTap1_Heuristic
                 {
              
                     string op1 = stack.Peek().ToString();
-                    stack.Pop();    
-                    string op2 = stack.Peek().ToString();
+                    string op2;
                     stack.Pop();
+                    op2 = stack.Peek().ToString();
+                    stack.Pop();
+                    
+                  
+                   
+                
                     string String1 = op2.ToString() + babyCute + op1.ToString();
                     string String2 = "("+op2.ToString()+")" + babyCute + op1.ToString();
-                    if (tinhFostfix(tenTromPostfix.anTrom(String2), false) == tinhFostfix(tenTromPostfix.anTrom(String1), false))
-                    stack.Push(String1);
-                    else stack.Push(String2);
+                    string String3 = op2.ToString()+ babyCute + "(" + op1.ToString() + ")";
+                    string String4 = "(" + op2.ToString() + ")" + babyCute + "(" + op1.ToString() + ")";
+                    double giaTriDung = tinhFostfix(tenTromPostfix.anTrom(String4), false);
+
+                    
+                    if (tinhFostfix(tenTromPostfix.anTrom(String1), false) == giaTriDung) stack.Push(String1);
+                    else if (tinhFostfix(tenTromPostfix.anTrom(String2), false) == giaTriDung) stack.Push(String2);
+                    else if (tinhFostfix(tenTromPostfix.anTrom(String3), false) == giaTriDung) stack.Push(String3);
+                    else stack.Push(String4);
                 }
         
 

@@ -13,18 +13,18 @@ namespace BaiTap1_Heuristic
         static void Main(string[] args)
         {
             
-            try
+             try
             {
-                string bieuThuc = "(3*4+5*((2-1)*5)/9)";
-
+                string bieuThuc = "1+2*3+9";
                 bieuThuc = tenTromPostfix.anTrom(bieuThuc);
-
-                float ketQua = nhaToanHocTaiBa.tinhFostfix(bieuThuc, true);
+             double ketQua = nhaToanHocTaiBa.tinhFostfix(bieuThuc, true);
+            
             }
             catch (Exception loi)
             {
-                Console.WriteLine("Bieu thuc sai hoac co loi");
+                Console.WriteLine("Bieu thuc ghi sai vui long nhap lai");
             }
+
 
 
 

@@ -28,17 +28,25 @@ namespace BaiTap1_Heuristic
 
             // Vì khi nhập biểu thức người dùng có thể viết dư khoảng trống,các ký tự không phù hợp và viết sai nên  cảnh sát chính tả sẽ bắt lỗi người dùng
 
-            bieuThuc = bieuThuc.Replace(" ", ""); // Cảnh sát chính tả bắt những đứa khoảng trống đem về đồn để giữ lại sự trong sạch cho biểu thức
-            bieuThuc = Regex.Replace(bieuThuc, @"\+|\-|\*|\/|\)|\(", delegate (Match match)   // Cảnh sát chính tả trấn áp các toán tử và đặt 2 đầu toán tử 1 khoảng trống
-            {
-                return " " + match.Value + " ";
-            });
+              bieuThuc = bieuThuc.Replace(" ", ""); // Cảnh sát chính tả bắt những đứa khoảng trống đem về đồn để giữ lại sự trong sạch cho biểu thức
+            /*      bieuThuc = Regex.Replace(bieuThuc, @"\+|\-|\*|\/|\)|\(", delegate (Match match)   // Cảnh sát chính tả trấn áp các toán tử và đặt 2 đầu toán tử 1 khoảng trống
+                 {
+                     return " " + match.Value + " ";
+                 });*/
+            bieuThuc = Regex.Replace(bieuThuc, @"(\+|\-|\*|\/|\%){3,}", match => match.Value[0].ToString());
+            bieuThuc = Regex.Replace(bieuThuc, @"(\+|\-|\*|\/|\%)(\+|\*|\/|\%)", match =>
+         match.Value[0].ToString()
+     );
+            bieuThuc = Regex.Replace(bieuThuc, @"\+|\-|\*|\/|\%|\)|\(", match =>
+                String.Format(" {0} ", match.Value)
+            );
             // 1 số đối tượng toán tử gần nhau vd như 1+-2 thì khi trấn áp cảnh sát sẽ bắt thành 1 +  - 2, việc này sẽ tạo thêm 2 khoảng trống giữa 2 toán tử kề nhau
             //làm các toán tử rời xa nhau 2 khoảng trống làm nó buồn, vì thế cảnh sát chính tả sẽ để cho nó gần nhau lại để trao hơi ấm tình yêu
             bieuThuc = bieuThuc.Replace("  ", " ");
             // có nhiều đối tượng khoảng trống rất tinh vi, đứng ở 2 đầu biên giới bieuThuc,nhưng làm sao mà thoát khỏi bàn tay của cảnh sát chính tả
             // vì thế chúng ta phải tạo đội quân Trim để vây bắt các đối tượng này
             bieuThuc = bieuThuc.Trim();
+
 
         }
         //Trong đợi vây bắt trên chúng ta đã thành công khi bắt được các đối tượng khoảng trống, nhưng có các đối tượng còn gian dối hơn
@@ -49,7 +57,16 @@ namespace BaiTap1_Heuristic
         }
         public static bool ktrToanHang(string toanTu)
         {
-            return Regex.Match(toanTu, @"^\d").Success;
+            try
+            {
+                double i = double.Parse(toanTu);
+
+                return true;
+            }
+            catch (Exception loi)
+            {
+                return false;
+            }
         }
         public void dauAm(ref string str )
         {
