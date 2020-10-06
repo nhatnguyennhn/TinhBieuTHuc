@@ -23,47 +23,9 @@ namespace BaiTap1_Heuristic
             // để dễ dàng trộm cắp phục vụ sở thích biến thái của lão thì lão đã nhờ 1 chú cảnh sát chính tả về giúp đỡ
 
             canhSatChinhTa.dinhDangBieuThuc(ref bieuThuc);
-
-            /*    IEnumerable<string> babyCutes = bieuThuc.Split(' '); // tách biệt các toán hạng và toán tử
-                Stack<string> stack = new Stack<string>();// tạo 1 ngăn xếp
-                StringBuilder postfix = new StringBuilder(); // do ghép chuỗi nhiều lần nên dùng StringBuilder quất cho nó đã
-                foreach (string babyCute in babyCutes) 
-                {
-                    if(canhSatChinhTa.ktrToanHang(babyCute))
-                    {
-                        postfix.Append(babyCute).Append(" ");
-                    }
-                    else if(babyCute == "(")
-                    {
-                        stack.Push(babyCute); // đẩy babycute vô stack
-
-                    }    
-                    else if(babyCute== ")")
-                    {
-                        string trom = stack.Pop(); // trộm các toán tử trong stack ra 
-                        while(trom!="(")// chưa gặp  dấu ( thì cứ trộm các toán tử trong stack 
-                        {
-                            postfix.Append(trom).Append(" "); 
-                            trom = stack.Pop();
-                        }    
-                    }
-                    else 
-                    //   if(canhSatChinhTa.ktrToanTu(babyCute)) 
-                    {
-                        while(stack.Count>0 && canhSatChinhTa.doUuTien(babyCute)<= canhSatChinhTa.doUuTien(stack.Peek()) )
-
-                            postfix.Append(stack.Pop()).Append(" "); //Chừng nào mà đỉnh stack là toán tử và độ ưu tiên toán tử đó ra khỏi stack và cho ra ngoài
-                        stack.Push(babyCute);// Đưa toán tử hiện tại vào stack
-
-                    }    
-                }
-
-                while (stack.Count() > 0) postfix.Append(stack.Pop()).Append(" "); // lấy các phần tử trong ngăn xếp đem ra postfix
-                return postfix.ToString();*/
             string[] babyCutes = bieuThuc.Split(' ').ToArray();
             Stack<string> stack = new Stack<string>();
             StringBuilder postfix = new StringBuilder();
-
             for (int i = 0; i < babyCutes.Length; i++)
             {
                 string babyCute = babyCutes[i];
@@ -97,7 +59,7 @@ namespace BaiTap1_Heuristic
                         x = stack.Pop();
                     }
                 }
-                else// (IsOperand(s))
+                else
                 {
                     postfix.Append(babyCute).Append(" ");
                 }

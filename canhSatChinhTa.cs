@@ -68,17 +68,8 @@ namespace BaiTap1_Heuristic
                 return false;
             }
         }
-        public void dauAm(ref string str )
-        {
-            
-            for(int i=0;i<str.Length;i++)
-            {
-                if (str[i] == '-' && !(ktrToanHang(str[i - 1].ToString()) )&& ktrToanHang(str[i + 1].ToString()))
-                    {
-                    
-                }
-            }
-        }
+      
+       
 
     }
 }
