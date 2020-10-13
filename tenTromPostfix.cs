@@ -15,7 +15,7 @@ namespace BaiTap1_Heuristic
         - Nếu là dấu mở ngoặc "(" : cho vào stack
         - Nếu là dấu đóng ngoặc ")": lấy các toán tử  trong stack ra và cho vào output cho đến khi gặp dấu mở ngoặc (lưu ý: dấu mở ngoặc cũng phải được đưa ra khỏi stack)
         - Nếu là toán tử:
-         Chừng nào mà đỉnh stack là toán tử và độ ưu tiên toán tử đó ra khỏi stack và cho ra output. Đưa toán tử hiện tại vào stack
+         Chừng nào mà đỉnh stack là toán tử và độ ưu tiên toán tử  đó ra khỏi stack và cho ra output. Đưa toán tử hiện tại vào stack
          */
 
         public static string anTrom(string bieuThuc)

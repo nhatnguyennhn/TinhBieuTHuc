@@ -40,6 +40,7 @@ namespace BaiTap1_Heuristic
             bieuThuc = Regex.Replace(bieuThuc, @"\+|\-|\*|\/|\%|\)|\(", match =>
                 String.Format(" {0} ", match.Value)
             );
+            
             // 1 số đối tượng toán tử gần nhau vd như 1+-2 thì khi trấn áp cảnh sát sẽ bắt thành 1 +  - 2, việc này sẽ tạo thêm 2 khoảng trống giữa 2 toán tử kề nhau
             //làm các toán tử rời xa nhau 2 khoảng trống làm nó buồn, vì thế cảnh sát chính tả sẽ để cho nó gần nhau lại để trao hơi ấm tình yêu
             bieuThuc = bieuThuc.Replace("  ", " ");

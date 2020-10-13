@@ -7,22 +7,26 @@ namespace BaiTap1_Heuristic
 {
     class Program
     {
-      
 
-     
+
+
         static void Main(string[] args)
         {
-          
-            string bieuThuc = "2*3+3*4";  Console.Write("bai toan : "+bieuThuc);
-            bieuThuc = tenTromPostfix.anTrom(bieuThuc);
-            string ketQua = nhaToanHocTaiBa.tinhNhanh(bieuThuc);
+            try
+            {
+                Console.WriteLine("Nhap bai toan : "); 
+                string bieuThuc = Console.ReadLine();  // Lấy biểu thức người dùng nhập vào 
+                Console.Write("Bai toan : " + bieuThuc);
+              
 
-
-
-
-
-
-
+                string ketQua = nhaToanHocTaiBa.tinhNhanh(tenTromPostfix.anTrom(bieuThuc)); 
+                Console.WriteLine();
+                Console.WriteLine("Dap an bai toan : " + ketQua);
+            }
+            catch( Exception loi)
+            {
+                Console.WriteLine("Error");
+            }
 
         }
     }

@@ -20,267 +20,172 @@ namespace BaiTap1_Heuristic
         Nếu là toán tử thì đem 2 toán hạng trong stack ra và  tính giá trị của chúng dựa vào toán tử này sau đó ném lại vô stack
         Giá trị còn lại cuối cùng của stack chính là kết quả của biểu thức Postfix ( rất dễ hiểu đúng không? đúng là nhà toán học tài ba ^^ giải thích cái là xong vấn đề)
         */
-     
+
         public static double tinhFostfix(string postfix)
         {
 
 
-                 Stack<double> stack = new Stack<double>();
-              
-                 postfix = postfix.Trim();
+            Stack<double> stack = new Stack<double>();
 
-                 IEnumerable<string> babyCutes = postfix.Split(' '); // như đã nói ở trên bạn hãy đọc sự tích của tên trộm postfix để hiểu 
-             
-                  foreach (string babyCute in babyCutes)
-                  {
+            postfix = postfix.Trim();
 
-                      if (canhSatChinhTa.ktrToanHang(babyCute))
-                      {
+            IEnumerable<string> babyCutes = postfix.Split(' '); // như đã nói ở trên bạn hãy đọc sự tích của tên trộm postfix để hiểu 
 
-                          stack.Push(double.Parse(babyCute)); // dù là nhà toán học tài ba nhưng ông ấy vẫn cần sự giúp đỡ của cảnh sát chính tả để biết đâu là toán hạng(nãy khen xong giờ thấy ổng hơi ngu rồi)
+            foreach (string babyCute in babyCutes)
+            {
 
-                      }
-                      else
-                      {
-                          double sohangsau = stack.Pop();
-                          double sohangtruoc = stack.Pop();
+                if (canhSatChinhTa.ktrToanHang(babyCute))
+                {
 
-                          string[] mang = postfix.Split(sohangtruoc.ToString() + " " + sohangsau.ToString() + " " + babyCute);
+                    stack.Push(double.Parse(babyCute)); // dù là nhà toán học tài ba nhưng ông ấy vẫn cần sự giúp đỡ của cảnh sát chính tả để biết đâu là toán hạng(nãy khen xong giờ thấy ổng hơi ngu rồi)
 
-                          double t = sohangtruoc;
-                          switch (babyCute)
-                          {
-                              case "+": sohangtruoc += sohangsau; break;
-                              case "-": sohangtruoc -= sohangsau; break;
-                              case "*": sohangtruoc *= sohangsau; break;
-                              case "/": sohangtruoc /= sohangsau; break;
-                          }
-                    
-                          bool nhatDz = true;
-                          postfix = mang[0];
-                          foreach (string i in mang)
-                          {
-                              if (nhatDz) postfix = postfix + sohangtruoc.ToString();
-                              else postfix = postfix + i;
-                              nhatDz = false;
+                }
+                else
+                {
+                    double sohangsau = stack.Pop();
+                    double sohangtruoc = stack.Pop();
 
-                          }
+                    string[] mang = postfix.Split(sohangtruoc.ToString() + " " + sohangsau.ToString() + " " + babyCute);
 
-               
+                    double t = sohangtruoc;
+                    switch (babyCute)
+                    {
+                        case "+": sohangtruoc += sohangsau; break;
+                        case "-": sohangtruoc -= sohangsau; break;
+                        case "*": sohangtruoc *= sohangsau; break;
+                        case "/": sohangtruoc /= sohangsau; break;
+                    }
 
-                          stack.Push(sohangtruoc);
+                    bool nhatDz = true;
+                    postfix = mang[0];
+                    foreach (string i in mang)
+                    {
+                        if (nhatDz) postfix = postfix + sohangtruoc.ToString();
+                        else postfix = postfix + i;
+                        nhatDz = false;
 
-                      }
+                    }
 
 
 
-                  }
+                    stack.Push(sohangtruoc);
 
-                  return stack.Pop(); 
+                }
 
-          
+
+
+            }
+
+            return stack.Pop();
+
+
         }
         public static string tinhNhanh(string postfix)
         {
+
             if (canhSatChinhTa.ktrToanHang(postfix)) return postfix;
             else
             {
-         
+
                 Stack<int> viTri = new Stack<int>();
                 postfix = postfix.Trim();
-               string[] babyCutes = postfix.Split(' '); // như đã nói ở trên bạn hãy đọc sự tích của tên trộm postfix để hiểu 
-
-               for(int i=0;i<babyCutes.Length;i++)
+                string[] babyCutes = postfix.Split(' '); // như đã nói ở trên bạn hãy đọc sự tích của tên trộm postfix để hiểu 
+                int n = babyCutes.Length;
+                string a = postfix;
+                if (Heuristic.phanPhoi(ref babyCutes, ref postfix, ref n))
                 {
-                 // string  babyCute = babyCutes[i];
+                    if (tinhFostfix(a) == tinhFostfix(postfix))
+                    {
+                        Console.WriteLine("   Dat nhan tu chung");
+
+                        Console.Write("= " + postfixHoanluong(postfix));
+                        return nhaToanHocTaiBa.tinhNhanh(postfix);
+
+                    }
+                    else postfix = a;
+               
+                        
+
+
+                  
+                }
+                if (Heuristic.so0nhan(ref babyCutes, ref postfix, ref n))
+                {
+                    Console.WriteLine("    Su dung tinh chat nhan cho 0");
+
+                    Console.Write("= " + postfixHoanluong(postfix));
+                    return nhaToanHocTaiBa.tinhNhanh(postfix);
+                }
+                if (Heuristic.nhanCho0(ref babyCutes, ref postfix, ref n))
+                {
+                    Console.WriteLine("    Su dung tinh chat nhan cho 0");
+
+                    Console.Write("= " + postfixHoanluong(postfix));
+                    return nhaToanHocTaiBa.tinhNhanh(postfix);
+                }/*
+                 if (Heuristic.so0nhan(ref babyCutes, ref postfix, ref n))
+                  {
+                      Console.WriteLine("    Su dung tinh chat nhan cho 0");
+
+                      Console.Write("= " + postfixHoanluong(postfix));
+                      return nhaToanHocTaiBa.tinhNhanh(postfix);
+                  }*/
+
+
+                for (int i = 0; i < n; i++)
+                {
+
+
+                    // string  babyCute = babyCutes[i];
+
                     if (canhSatChinhTa.ktrToanHang(babyCutes[i]))
                     {
 
-                       // dù là nhà toán học tài ba nhưng ông ấy vẫn cần sự giúp đỡ của cảnh sát chính tả để biết đâu là toán hạng(nãy khen xong giờ thấy ổng hơi ngu rồi)
+                        // dù là nhà toán học tài ba nhưng ông ấy vẫn cần sự giúp đỡ của cảnh sát chính tả để biết đâu là toán hạng(nãy khen xong giờ thấy ổng hơi ngu rồi)
                         viTri.Push(i);
                     }
                     else
                     {
-                      
+
                         int viTrisohangsau = viTri.Pop();
-                       
+
                         int viTrisohangtruoc = viTri.Pop();
-                        //21-3+9+ i=2(-) 
-                      
-                       
-                        int j = i + 1;
-                        if (giaTri(double.Parse(babyCutes[viTrisohangsau]), babyCutes[i], double.Parse(babyCutes[viTrisohangtruoc])) % 10 != 0)
-                        
-                            while (j < babyCutes.Length && canhSatChinhTa.ktrToanHang(babyCutes[j]) && canhSatChinhTa.ktrToanTu(babyCutes[j + 1]) && canhSatChinhTa.doUuTien(babyCutes[j + 1]) == canhSatChinhTa.doUuTien(babyCutes[i]))
+
+
+                        if (Heuristic.chuyen(ref babyCutes, viTrisohangsau, viTrisohangtruoc, i, ref postfix, ref n))
                         {
-                            bool nhatdz = false;
-                            string toanTu = babyCutes[j + 1];
-                            if (babyCutes[i] == "-")
-                            {
-                                if (toanTu == "+")
-                                {
-                                    toanTu = "-";
-                                }
-                                else toanTu = "+";
-                                nhatdz = true;
-                            }
-                            if (babyCutes[i] == "/")
-                            {
-                                if (toanTu == "*")
-                                {
-                                    toanTu = "/";
-                                }
-                                else toanTu = "*";
-                                nhatdz = true;
 
-                            }
-                        
-                                if ( giaTri(double.Parse(babyCutes[viTrisohangsau]), toanTu, double.Parse(babyCutes[j])) % 10 == 0)
-                            {
-
-                                string[] chuyen = new string[1000];
-                                int k = 0;
-                               
-                                while (k < i)
-                                {
-                                    chuyen[k] = babyCutes[k];
-                                    k++;
-
-                                }
-
-                                chuyen[k] = babyCutes[j];
-                                chuyen[k + 1] = toanTu;
-                                k = k + 2;
-                                for (int z = i; z < j; z++)
-                                {
-                                    chuyen[k] = babyCutes[z];
-                                    k = k + 1;
-                                }
-                                for(int z=j+2;z<babyCutes.Length;z++)
-                                {
-                                    chuyen[k] = babyCutes[z];
-                                    k = k + 1;
-                                }
-                                for( k=0;k< babyCutes.Length;k++)
-                                {
-                                    
-                                     
-                                    babyCutes[k] = chuyen[k];
-                                }
-                                
-                                postfix = "";
-                                foreach (string i1 in babyCutes)
-                                {
-                                    postfix = postfix + " " + i1;
-                                }
-                          if(nhatdz)      Console.WriteLine(" Su dung phep ket hop ");
-                                else Console.WriteLine(" Su dung phep giao hoan ");
-
-                                Console.Write("=" + postfixHoanluong( postfix));
-                                  
-                                return tinhNhanh(postfix);
-                            } 
-                            else
-                            {
-                                    if(nhatdz)
-                                    {
-                                       switch(toanTu)
-                                        {
-                                            case "+":
-                                                toanTu = "-";
-                                                break;
-                                            case "-":
-                                                toanTu = "+";
-                                                break;
-                                            case "*":
-                                                toanTu = "/";
-                                                break;
-                                            case "/":
-                                                toanTu = "*";
-                                                break;
-
-                                        }
-                                    }
-
-                                    if ( giaTri(double.Parse(babyCutes[j]), toanTu, double.Parse(babyCutes[viTrisohangtruoc])) % 10 == 0)
-                                    {
-                                        
-
-                                        string[] chuyen = new string[1000];
-                                        int k = 0;
-
-                                        while (k < i-1)
-                                        {
-                                            chuyen[k] = babyCutes[k];
-                                            k++;
-
-                                        }
-                                     
-                                        chuyen[k] = babyCutes[j];
-                                        chuyen[k + 1] = toanTu;
-                                        k = k + 2;
-                                        for (int z = i-1; z < j; z++)
-                                        {
-                                            chuyen[k] = babyCutes[z];
-                                            k = k + 1;
-                                        }
-                                        for (int z = j + 2; z < babyCutes.Length; z++)
-                                        {
-                                            chuyen[k] = babyCutes[z];
-                                            k = k + 1;
-                                        }
-                                        for (k = 0; k < babyCutes.Length; k++)
-                                        {
-
-
-                                            babyCutes[k] = chuyen[k];
-                                        }
-
-                                        postfix = "";
-                                        foreach (string i1 in babyCutes)
-                                        {
-                                            postfix = postfix + " " + i1;
-                                        }
-                                        if (nhatdz) Console.WriteLine(" Su dung phep ket hop ");
-                                        else Console.WriteLine(" Su dung phep giao hoan ");
-
-                                        Console.Write("=" + postfixHoanluong(postfix));
-
-                                        return tinhNhanh(postfix);
-                                    }
-
-                                }
-                           
-                                
-                            j = j + 2;
+                            return nhaToanHocTaiBa.tinhNhanh(postfix);
                         }
-                                                 
 
-                         //
-                         postfix = "";
-                        foreach (string i1 in babyCutes)
+
+
+                        //
+                        postfix = "";
+                        for (int i1 = 0; i1 < n; i1++)
                         {
-                            postfix = postfix +" "+ i1;
+                            postfix = postfix + " " + babyCutes[i1];
                         }
-                      
-                            //
-                            string[] mang = postfix.Split(babyCutes[viTrisohangtruoc] + " " + double.Parse(babyCutes[viTrisohangsau]).ToString() + " " + babyCutes[i]);
 
-                      
-                         Console.WriteLine("   Lay : " + babyCutes[viTrisohangtruoc] + babyCutes[i] + double.Parse(babyCutes[viTrisohangsau]) + "=" + giaTri(double.Parse(babyCutes[viTrisohangtruoc]), babyCutes[i], double.Parse(babyCutes[viTrisohangsau])));
+
+                        //
+                        string[] mang = postfix.Split(babyCutes[viTrisohangtruoc] + " " + double.Parse(babyCutes[viTrisohangsau]).ToString() + " " + babyCutes[i]);
+
+
+                        Console.WriteLine("   Lay : " + babyCutes[viTrisohangtruoc] + babyCutes[i] + double.Parse(babyCutes[viTrisohangsau]) + "=" + giaTri(double.Parse(babyCutes[viTrisohangtruoc]), babyCutes[i], double.Parse(babyCutes[viTrisohangsau])));
                         bool nhatDz = true;
                         postfix = mang[0];
                         foreach (string i1 in mang)
                         {
-                            if (nhatDz) postfix = postfix + giaTri(double.Parse( babyCutes[viTrisohangtruoc]), babyCutes[i], double.Parse(babyCutes[viTrisohangsau])).ToString();
+                            if (nhatDz) postfix = postfix + giaTri(double.Parse(babyCutes[viTrisohangtruoc]), babyCutes[i], double.Parse(babyCutes[viTrisohangsau])).ToString();
                             else postfix = postfix + i1;
                             nhatDz = false;
 
                         }
 
                         Console.Write("=" + postfixHoanluong(postfix));
-                         return tinhNhanh(postfix);
-                     
+                        return tinhNhanh(postfix);
+
 
                     }
 
@@ -296,11 +201,11 @@ namespace BaiTap1_Heuristic
 
             }
         }
-  
-        public static double giaTri(double so1,string dau,double so2)
+
+        public static double giaTri(double so1, string dau, double so2)
 
         {
-           
+
             switch (dau)
             {
                 case "+": so1 += so2; break;
@@ -317,51 +222,62 @@ namespace BaiTap1_Heuristic
         Nếu nó là toán tử, lôi đầu 2 giá trị đầu của stack, đặt toán tử và các giá trị là đối số tạo thành 1 chuỗi. Đẩy chuỗi vào lại stack
         Nếu còn 1 giá trị thì nó chính là giá trị biểu thức infix
          */
-        public static string postfixHoanluong (string postfix)
+        public static string postfixHoanluong(string postfix)
         {
 
-          
+
             Stack<string> stack = new Stack<string>();
             postfix = postfix.Trim();
             IEnumerable<string> babyCutes = postfix.Split(' ');
-    
+
             foreach (string babyCute in babyCutes)
             {
-                if (canhSatChinhTa.ktrToanHang(babyCute)) stack.Push(babyCute); 
+                if (canhSatChinhTa.ktrToanHang(babyCute)) stack.Push(babyCute);
+
                 else
                 {
-             
+
                     string op1 = stack.Peek().ToString();
                     string op2;
                     stack.Pop();
                     op2 = stack.Peek().ToString();
                     stack.Pop();
-                    
-                  
-                   
-                
-                    string String1 = op2.ToString() + babyCute + op1.ToString();
-                    string String2 = "("+op2.ToString()+")" + babyCute + op1.ToString();
-                    string String3 = op2.ToString()+ babyCute + "(" + op1.ToString() + ")";
-                    string String4 = "(" + op2.ToString() + ")" + babyCute + "(" + op1.ToString() + ")";
-                    double giaTriDung =tinhFostfix(tenTromPostfix.anTrom(String4));
 
-                    
-                    if (tinhFostfix(tenTromPostfix.anTrom(String1))== giaTriDung) stack.Push(String1);
-                 else if (tinhFostfix(tenTromPostfix.anTrom(String2)) == giaTriDung) stack.Push(String2);
-                   else if (tinhFostfix(tenTromPostfix.anTrom(String3)) == giaTriDung) stack.Push(String3);
-                    else stack.Push(String4);
+
+
+
+                    string String1 = op2.ToString() + babyCute + op1.ToString();
+                    string String2 = "(" + op2.ToString() + ")" + babyCute + op1.ToString();
+                    string String3 = op2.ToString() + babyCute + "(" + op1.ToString() + ")";
+                    string String4 = "(" + op2.ToString() + ")" + babyCute + "(" + op1.ToString() + ")";
+                    double giaTriDung = tinhFostfix(tenTromPostfix.anTrom(String4));
+                    if (babyCute == "*" || babyCute == "/")
+                    {
+                        if (!canhSatChinhTa.ktrToanHang(op1)) op1 = "(" + op1 + ")";
+                        if (!canhSatChinhTa.ktrToanHang(op2)) op2 = "(" + op2 + ")";
+
+                        stack.Push(  op2   + babyCute +   op1  );
+
+                    }
+                    else
+                    {
+                        if (tinhFostfix(tenTromPostfix.anTrom(String1)) == giaTriDung) stack.Push(String1);
+                        else if (tinhFostfix(tenTromPostfix.anTrom(String2)) == giaTriDung) stack.Push(String2);
+                        else if (tinhFostfix(tenTromPostfix.anTrom(String3)) == giaTriDung) stack.Push(String3);
+                        else stack.Push(String4);
+                    }
+
                 }
-        
+
 
 
             }
             return stack.Pop();
 
         }
-    
-       
-        
-        
+
+
+
+
     }
 }
